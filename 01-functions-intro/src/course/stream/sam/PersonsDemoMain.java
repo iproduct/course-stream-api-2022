@@ -21,7 +21,7 @@ public class PersonsDemoMain {
                         List.of(new Phone(HOME, "+(44) 345345464"), new Phone(MOBILE, "+(44) 445 756756")),
                         new Address("Great Britain", "London", "Baker Steet 15")),
                 new Person(1L, "Ivan", "Petrov", 39, MALE, "jdoe@gmail.com",
-                        List.of(new Phone(WORK, "+(359) 2 345345"), new Phone(MOBILE, "+(359) 889 968686")),
+                        List.of(new Phone(WORK, "+(359) 2 345345"), new Phone(MOBILE, "+(44) 4534534")),
                         new Address("Sofia", "Hristo botev 54"))
                 );
         var personsByAge = new ArrayList<>(persons);
