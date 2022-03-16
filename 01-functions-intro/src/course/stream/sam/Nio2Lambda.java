@@ -3,16 +3,45 @@ package course.stream.sam;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Iterator;
+import java.util.Objects;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.function.BiFunction;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import static java.util.Spliterator.SIZED;
+
 public class Nio2Lambda {
-    public static <A, B, C> Stream<C> zip(Stream<A> streamA, Stream<B> streamB, BiFunction<A, B, C> zipper) {
-        final Iterator<A> iteratorA = streamA.iterator();
-        final Iterator<B> iteratorB = streamB.iterator();
+    static <A, B, C> Stream<C> zip(
+            Stream<A> s1,
+            Stream<B> s2,
+            BiFunction<A, B, C> combiner) {
+        final var i2 = s2.iterator();
+        return s1.map(x1 -> i2.hasNext() ? combiner.apply(x1, i2.next()) : null)
+                .takeWhile(Objects::nonNull);
+    }
+
+    public static <A, B, C> Stream<C> zip2(Stream<A> streamA, Stream<B> streamB, BiFunction<A, B, C> zipper) {
+        Objects.requireNonNull(zipper);
+        Spliterator<? extends A> aSpliterator = Objects.requireNonNull(streamA).spliterator();
+        Spliterator<? extends B> bSpliterator = Objects.requireNonNull(streamB).spliterator();
+
+        // Zipping looses DISTINCT and SORTED characteristics
+        int characteristics = ((aSpliterator.characteristics() & bSpliterator.characteristics()
+                & ~(Spliterator.DISTINCT | Spliterator.SORTED))
+                | (aSpliterator.characteristics() & SIZED | bSpliterator.characteristics() & SIZED));
+
+        long zipSize = (aSpliterator.getExactSizeIfKnown() >= 0) ?
+                ((bSpliterator.getExactSizeIfKnown() >= 0) ?
+                        Math.min(aSpliterator.estimateSize(), bSpliterator.estimateSize())
+                        : aSpliterator.estimateSize())
+                :bSpliterator.getExactSizeIfKnown();
+
+        final Iterator<A> iteratorA = Spliterators.iterator(aSpliterator);
+        final Iterator<B> iteratorB = Spliterators.iterator(bSpliterator);
         final Iterator<C> iteratorC = new Iterator<C>() {
             @Override
             public boolean hasNext() {
@@ -24,8 +53,8 @@ public class Nio2Lambda {
                 return zipper.apply(iteratorA.next(), iteratorB.next());
             }
         };
-        final boolean parallel = streamA.isParallel() || streamB.isParallel();
-        return iteratorToFiniteStream(iteratorC, parallel);
+        Spliterator<C> split = Spliterators.spliterator(iteratorC, zipSize, characteristics);
+        return StreamSupport.stream(split, streamA.isParallel() || streamA.isParallel());
     }
 
     public static <T> Stream<T> iteratorToFiniteStream(Iterator<T> iterator, boolean parallel) {
@@ -37,8 +66,8 @@ public class Nio2Lambda {
         var path = Paths.get("src/course/stream/sam/Nio2Lambda.java");
         try {
             var lines = Files.lines(path);
-            var numbers = IntStream.iterate(1, x -> x + 1).mapToObj(i -> Integer.valueOf(i));
-            var results = zip(numbers, lines, (Integer n, String line) ->  n + ": " + line);
+            var numbers = IntStream.iterate(1, x -> x + 1).boxed();
+            var results = zip(numbers, lines, (Integer n, String line) -> n + ": " + line);
             results.forEach(System.out::println);
         } catch (IOException e) {
             e.printStackTrace();
