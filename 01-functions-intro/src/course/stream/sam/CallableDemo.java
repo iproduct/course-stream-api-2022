@@ -30,7 +30,14 @@ public class CallableDemo {
         List<Future<String>> results = new ArrayList<>();
         List<String> inputs = List.of("java", "jdk", "CompletableFuture", "multithreading", "lambdas", "Stream API");
         for(var input: inputs){
-            results.add(cs.submit(new SearchTask(input)));
+            results.add(cs.submit(() -> {
+                try {
+                    Thread.sleep(new Random().nextInt(10000));
+                } catch (InterruptedException e) {
+                    System.out.printf("Computation interrupted for '%d'%n", input);
+                }
+                return String.format("Serach results for '%s' ...%n", input);
+            }));
         }
         for(int i = 0; i < results.size(); i++) {
             try {
