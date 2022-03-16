@@ -1,6 +1,6 @@
 package course.stream.sam;
 
-public class Phone {
+public class Phone implements Comparable<Phone> {
     private PhoneKind kind;
     private String number;
 
@@ -52,5 +52,10 @@ public class Phone {
                 "kind=" + kind +
                 ", number='" + number + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Phone other) {
+        return 0;
     }
 }
