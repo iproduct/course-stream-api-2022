@@ -23,8 +23,7 @@ class SearchTask implements Callable<String> {
     }
 }
 
-
-public class CalableDemo {
+public class CallableDemo {
     public static void main(String[] args) {
         var executor = Executors.newCachedThreadPool();
         ExecutorCompletionService<String> cs = new ExecutorCompletionService<>(executor);
