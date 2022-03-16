@@ -1,8 +1,8 @@
 package course.stream.sam;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static course.stream.sam.Gender.FEMALE;
 import static course.stream.sam.Gender.MALE;
@@ -22,6 +22,10 @@ public class PersonsDemoMain {
                         new Address("Great Britain", "London", "Baker Steet 15")),
                 new Person(4L, "Ivan", "Petrov", 39, MALE, "jdoe@gmail.com",
                         List.of(new Phone(WORK, "+(359) 2 345345"), new Phone(MOBILE, "+(44) 4534535")),
+                        new Address("Sofia", "Hristo botev 54")),
+                new Person(4L, "Nadezda", "Petrova", 39, FEMALE, "npetrova@gmail.com",
+                    List.of(new Phone(WORK, "+(359) 2 345345"), new Phone(MOBILE, "+(44) 4534535"),
+                        new Phone(MOBILE, "+(1) 4534353535")),
                         new Address("Sofia", "Hristo botev 54"))
         );
         var personsByAge = new ArrayList<>(persons);
@@ -32,9 +36,31 @@ public class PersonsDemoMain {
 //            }
 //        });
 //        personsByAge.sort((p1, p2) -> Integer.compare(p1.getAge(), p2.getAge()));
-        personsByAge.sort(Comparator.comparingInt(Person::getAge));
-        personsByAge.forEach(System.out::println);
+//        personsByAge.sort(Comparator.comparingInt(Person::getAge));
+//        personsByAge.forEach(System.out::println);
 
+//        var personsByCountryThenByFirstName = new ArrayList<>(persons);
+//        personsByCountryThenByFirstName.sort(
+//                Comparator.comparing((Person person) -> person.getAddress().getCountry())
+//                        .thenComparing(Person::getFirstName)
+//        );
+//        personsByCountryThenByFirstName.forEach(System.out::println);
+
+        var personsByCountryCodeThenByFirstName = new ArrayList<>(persons);
+        personsByCountryCodeThenByFirstName.sort(Comparator
+                .comparing((Person person) -> {
+                    Optional<Map.Entry<Integer, Long>> max = person.getPhones().stream()
+                            .map(phone -> {
+                                String number = phone.getNumber();
+                                return Integer.valueOf(number.substring(number.indexOf("(") + 1, number.lastIndexOf(")")));
+                            })
+                            .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                            .entrySet().stream()
+                            .max(Comparator.comparingLong(Map.Entry::getValue));
+                    return max.get().getKey();
+                }).thenComparing(Person::getFirstName)
+        );
+        personsByCountryCodeThenByFirstName.forEach(System.out::println);
 
     }
 }
