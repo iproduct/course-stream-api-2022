@@ -37,11 +37,15 @@ public class Nio2Lambda {
         var path = Paths.get("src/course/stream/sam/Nio2Lambda.java");
         try {
             var lines = Files.lines(path);
-            var numbers = IntStream.range(1,Integer.MAX_VALUE).mapToObj(i -> Integer.valueOf(i));
+            var numbers = IntStream.iterate(1, x -> x + 1).mapToObj(i -> Integer.valueOf(i));
             var results = zip(numbers, lines, (Integer n, String line) ->  n + ": " + line);
             results.forEach(System.out::println);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        IntStream s = IntStream.of(1, 2, 3, 4);
+        long count = s.peek(System.out::println).limit(2).count();
+        System.out.println(count);
     }
 }
