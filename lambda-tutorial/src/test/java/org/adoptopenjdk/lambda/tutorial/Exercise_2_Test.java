@@ -223,6 +223,7 @@ public class Exercise_2_Test {
         Set<Ballot> votes = new HashSet<>(asList(
                 Ballot.voteFor(Party.LABOUR),
                 Ballot.voteFor(Party.CONSERVATIVE),
+                Ballot.voteFor(Party.CONSERVATIVE),
                 Ballot.spoiled(),
                 Ballot.voteFor(Party.MONSTER_RAVING_LOONY_PARTY),
                 Ballot.voteFor(Party.LIBERAL_DEMOCRATS),
@@ -234,7 +235,7 @@ public class Exercise_2_Test {
 
         Set<Ballot> unspoiledBallots = ElectoralDistrict.unspoiledBallots(votes);
 
-        assertThat(unspoiledBallots, hasSize(6));
+        assertThat(unspoiledBallots, hasSize(5));
         assertThat(unspoiledBallots, everyItem(is(not(spoiled()))));
     }
 

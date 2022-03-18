@@ -57,9 +57,8 @@ public final class Document {
     }
 
     public Document copyWithFooter() {
-        return getPages().stream()
-            .map(page -> appendFooter(page))
-            .collect(collectingAndThen(Collectors.<Page>toList(), pages -> copyWithPages(pages)));
+        // TODO your code here
+        return null;
     }
 
     public static final class Page {

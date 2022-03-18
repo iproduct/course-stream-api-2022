@@ -70,4 +70,19 @@ public final class Ballot {
     public Party getParty() {
         return party;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Ballot)) return false;
+
+        Ballot ballot = (Ballot) o;
+
+        return getParty() == ballot.getParty();
+    }
+
+    @Override
+    public int hashCode() {
+        return getParty() != null ? getParty().hashCode() : 0;
+    }
 }
