@@ -35,9 +35,9 @@ public class PersonsDemoMain {
 //                return Integer.compare(p1.getAge(), p2.getAge());
 //            }
 //        });
-//        personsByAge.sort((p1, p2) -> Integer.compare(p1.getAge(), p2.getAge()));
-//        personsByAge.sort(Comparator.comparingInt(Person::getAge));
-//        personsByAge.forEach(System.out::println);
+        personsByAge.sort((p1, p2) -> Integer.compare(p1.getAge(), p2.getAge()));
+        personsByAge.sort(Comparator.comparingInt(Person::getAge));
+        personsByAge.forEach(System.out::println);
 
 //        var personsByCountryThenByFirstName = new ArrayList<>(persons);
 //        personsByCountryThenByFirstName.sort(

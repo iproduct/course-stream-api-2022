@@ -53,7 +53,8 @@ public class Nio2Lambda {
                 return zipper.apply(iteratorA.next(), iteratorB.next());
             }
         };
-        Spliterator<C> split = Spliterators.spliterator(iteratorC, zipSize, characteristics);
+        Spliterator<C> split = zipSize > 0 ? Spliterators.spliterator(iteratorC, zipSize, characteristics):
+                Spliterators.spliteratorUnknownSize(iteratorC, characteristics);
         return StreamSupport.stream(split, streamA.isParallel() || streamA.isParallel());
     }
 
@@ -65,16 +66,16 @@ public class Nio2Lambda {
     public static void main(String[] args) {
         var path = Paths.get("src/course/stream/sam/Nio2Lambda.java");
         try {
-            var lines = Files.lines(path);
-            var numbers = IntStream.iterate(1, x -> x + 1).boxed();
+            var lines = Files.lines(path).parallel();//map(line -> line.toUpperCase());
+            var numbers = IntStream.iterate(1, x -> x + 1).boxed().parallel();
             var results = zip(numbers, lines, (Integer n, String line) -> n + ": " + line);
             results.forEach(System.out::println);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        IntStream s = IntStream.of(1, 2, 3, 4);
-        long count = s.peek(System.out::println).limit(2).count();
-        System.out.println(count);
+//        IntStream s = IntStream.of(1, 2, 3, 4);
+//        long count = s.peek(System.out::println).limit(2).count();
+//        System.out.println(count);
     }
 }
