@@ -1,9 +1,17 @@
 package course.stream.streams;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import static java.util.function.Predicate.not;
 
 public class KeywordExtraction {
     public static final List<String> STOP_WORDS = List.of(
@@ -25,7 +33,17 @@ public class KeywordExtraction {
 
     public static void main(String[] args) throws IOException {
         var path = Paths.get("data/fp_wiki.txt");
-        Files.lines(path).skip(80).limit(5)
-                .forEach(System.out::println);
+        var results = Files.lines(path, StandardCharsets.UTF_8)
+                .flatMap(line -> Arrays.stream(line.split("\\W+")))
+                .map(String::toLowerCase)
+                .filter(word -> word.length() > 2)
+                .filter(not(STOP_WORDS::contains))
+                .collect(Collectors.collectingAndThen(
+                        Collectors.groupingBy(Function.identity(), Collectors.counting()),
+                        (Map<String, Long> wordCounts) -> wordCounts.entrySet().stream()
+                                .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                                .limit(20).collect(Collectors.toList())
+                ));
+        System.out.println(results);
     }
 }
