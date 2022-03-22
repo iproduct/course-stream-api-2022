@@ -4,6 +4,7 @@ import course.stream.util.Tuple2;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -55,7 +56,7 @@ public class StreamApiDemo01 {
         var chars = stringStream
                 .flatMapToInt(str -> str.chars())
                 .mapToObj(Character::toString)
-                .collect(Collectors.joining(", "));
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
         System.out.println(chars);
 
     }
