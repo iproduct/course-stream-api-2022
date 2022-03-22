@@ -1,12 +1,8 @@
 package course.stream.demos;
 
-import course.stream.demos.util.Tuple2;
-
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.OptionalInt;
 import java.util.concurrent.atomic.AtomicInteger;

@@ -1,11 +1,10 @@
 package course.stream.demos;
 
-import course.stream.demos.util.StreamUtil;
-import course.stream.demos.util.Tuple2;
+import course.stream.util.StreamUtil;
+import course.stream.util.Tuple2;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;

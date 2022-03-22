@@ -1,4 +1,4 @@
-package course.stream.demos.util;
+package course.stream.util;
 
 import java.util.Iterator;
 import java.util.Objects;
