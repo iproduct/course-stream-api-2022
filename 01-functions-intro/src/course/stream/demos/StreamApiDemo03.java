@@ -39,13 +39,15 @@ public class StreamApiDemo03 {
                 .filter(word -> word.length() > 2)
                 .filter(not(STOP_WORDS::contains));
         var wordCounts = words.collect(
-                Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                Collectors.groupingBy(Function.identity(), Collectors.summarizingLong(String::length)))
                 .entrySet();
-        var sortedWordCounts = wordCounts.stream()
-                .sorted(Map.Entry.<String, Long>comparingByValue().reversed()
-                        .thenComparing(Map.Entry.<String, Long>comparingByKey()));
-        var top20WordsCounts = sortedWordCounts.limit(20);
-        top20WordsCounts.forEach(System.out::println);
+        wordCounts.forEach(System.out::println);
+//        var sortedWordCounts = wordCounts.stream()
+//                .sorted(Map.Entry.<String, Long>comparingByValue().reversed()
+//                        .thenComparing(Map.Entry.<String, Long>comparingByKey()));
+//        var top20WordsCounts = sortedWordCounts.limit(20);
+//        top20WordsCounts.forEach(System.out::println);
+
     }
 }
 

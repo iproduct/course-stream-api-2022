@@ -1,10 +1,12 @@
 package course.stream.demos;
 
+import course.stream.util.Tuple2;
+
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
-import java.util.OptionalInt;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -57,17 +59,17 @@ public class StreamApiDemo04 {
 
 
         var path = Paths.get("src/course/stream/demos/StreamApiDemo04.java");
-//        String fResult = Files.lines(path)
-//                .reduce(new Tuple2<>("", 1), (acc, line) -> // accumulator
-//                                new Tuple2<>(acc.getV1() + acc.getV2() + ": " + line + "\n", acc.getV2() + 1),
-//                        (acc1, acc2) -> // combimner
-//                                new Tuple2<>(acc1.getV1() + "\n" + acc2.getV2(), 0)).getV1();
-//        System.out.println(fResult);
+        String fResult = Files.lines(path)
+                .reduce(new Tuple2<>("", 1), (acc, line) -> // accumulator
+                                new Tuple2<>(acc.getV1() + acc.getV2() + ": " + line + "\n", acc.getV2() + 1),
+                        (acc1, acc2) -> // combimner
+                                new Tuple2<>(acc1.getV1() + "\n" + acc2.getV2(), 0)).getV1();
+        System.out.println(fResult);
 
-//        Files.lines(path))
-//                .collect(HashMap::new, (h, o) -> h.put(h.size(), o), (h, o) -> {}) // Create a map of the index to the object
-//                .forEach((i, o) -> { // Now we can use a BiConsumer forEach!
-//                    System.out.println(String.format("%d => %s", i+1, o));
-//                });
+        Files.lines(path)
+                .collect(HashMap<Integer, String>::new, (map, line) -> map.put(map.size(), line), Map::putAll) // Create a map of the index to the object
+                .forEach((i, o) -> { // Now we can use a BiConsumer forEach!
+                    System.out.println(String.format("%d: %s", i+1, o));
+                });
     }
 }
