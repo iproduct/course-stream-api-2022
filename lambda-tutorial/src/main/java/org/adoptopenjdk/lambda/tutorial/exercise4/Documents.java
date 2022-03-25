@@ -37,8 +37,7 @@ public class Documents {
      * Return the titles from a list of documents.
      */
     public static List<String> titlesOf(Document... documents) {
-        // TODO your code here
-        return Collections.emptyList();
+        return Arrays.stream(documents).map(Document::getTitle).collect(toList());
     }
 
     public static Integer characterCount(Page page) {

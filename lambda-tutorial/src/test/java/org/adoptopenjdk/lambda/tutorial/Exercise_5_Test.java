@@ -29,6 +29,7 @@ import org.adoptopenjdk.lambda.tutorial.exercise5.thirdpartyplugin.CloudScrobbli
 import org.adoptopenjdk.lambda.tutorial.exercise5.musicplayer.MusicLibrary;
 import org.adoptopenjdk.lambda.tutorial.exercise5.musicplayer.Rating;
 import org.adoptopenjdk.lambda.tutorial.exercise5.musicplayer.Song;
+import org.adoptopenjdk.lambda.tutorial.exercise5.thirdpartyplugin.CloudScrobblingMusicLibrary2;
 import org.adoptopenjdk.lambda.tutorial.exercise5.thirdpartyplugin.LocalFilesystemMusicLibrary;
 import org.adoptopenjdk.lambda.tutorial.exercise5.thirdpartyplugin.UserRatedLocalFilesystemMusicLibrary;
 import org.adoptopenjdk.lambda.tutorial.util.FeatureMatchers;
@@ -225,11 +226,19 @@ public class Exercise_5_Test {
      * @see CloudScrobblingMusicLibrary.CloudScrobblingService#retrieveScrobbledRatingOf(Song)
      */
     @Test
-    public void overridesDefaultMethodInClassToProvideCustomSongRatingAlgorithm() {
+    public void overridesDefaultMethodInIntefaceToProvideCustomSongRatingAlgorithm() {
         MusicLibrary library = new CloudScrobblingMusicLibrary();
 
         assertThat(library.ratingOf(new Song("Candy", "Paulo Nutini")), is(new Rating(78)));
         assertThat(CloudScrobblingMusicLibrary.class, HasConcreteMethod.called("ratingOf"));
+    }
+
+    @Test
+    public void defaultMethodInIntefaceToProvideRatingUsingDefaultAlgorithm() {
+        MusicLibrary library = new CloudScrobblingMusicLibrary2();
+
+        assertThat(library.ratingOf(new Song("Candy", "Paulo Nutini")), is(new Rating(20)));
+        assertThat(MusicLibrary.class, HasConcreteMethod.called("ratingOf"));
     }
 
     /**

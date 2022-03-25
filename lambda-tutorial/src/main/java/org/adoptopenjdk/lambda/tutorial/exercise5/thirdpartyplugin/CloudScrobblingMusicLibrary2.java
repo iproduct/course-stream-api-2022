@@ -28,13 +28,11 @@ import org.adoptopenjdk.lambda.tutorial.exercise5.musicplayer.Song;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Random;
 
-public class CloudScrobblingMusicLibrary implements MusicLibrary {
+public class CloudScrobblingMusicLibrary2 implements MusicLibrary {
     private final CloudScrobblingService cloudScrobblingService;
 
-    public CloudScrobblingMusicLibrary() {
+    public CloudScrobblingMusicLibrary2() {
         this.cloudScrobblingService = new CloudScrobblingService();
     }
 
@@ -48,17 +46,11 @@ public class CloudScrobblingMusicLibrary implements MusicLibrary {
         return cloudScrobblingService.retrieveTimesPlayedFromCloud(song);
     }
 
-    @Override
-    public Rating ratingOf(Song song) {
-        float rating = cloudScrobblingService.retrieveScrobbledRatingOf(song);
-        return new Rating(Math.round(rating));
-    }
-
     public static final class CloudScrobblingService {
 
         public int retrieveTimesPlayedFromCloud(Song song) {
             // Simulate real cloud service by returning a random number
-            return (int) (1 + Math.round(Math.random() % 500));
+            return 42;
         }
 
         public int retrieveScrobbledRatingOf(Song song) {
