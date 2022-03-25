@@ -41,6 +41,5 @@ public class StreamApiDemo05 {
         }
         return result;
 
-
     }
 }
