@@ -1,5 +1,7 @@
 package course.stream.demos;
 
+import course.stream.sam.Person;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -7,7 +9,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -35,6 +40,7 @@ public class StreamApiDemo05 {
                     .collect(Collectors.toList());
         }
         return result;
+
 
     }
 }
