@@ -64,7 +64,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jdk.version>1.8</jdk.version>
+        <jdk.version>11</jdk.version>
     </properties>
 
     <dependencyManagement>
@@ -215,7 +215,7 @@
                                 <artifactId>maven-jxr-plugin</artifactId>
                                 <version>2.3</version>
                             </plugin>
-                            <!-- TODO When PMD supports 1.8 -->
+                            <!-- TODO When PMD supports 11 -->
                             <!-- 
                             <plugin>
                                 <groupId>org.apache.maven.plugins</groupId>
@@ -231,7 +231,7 @@
                                 <artifactId>maven-project-info-reports-plugin</artifactId>
                                 <version>2.6</version>
                             </plugin>
-                            <!-- TODO When Findbugs supports 1.8 -->
+                            <!-- TODO When Findbugs supports 11 -->
                             <!-- 
                             <plugin>
                                 <groupId>org.codehaus.mojo</groupId>

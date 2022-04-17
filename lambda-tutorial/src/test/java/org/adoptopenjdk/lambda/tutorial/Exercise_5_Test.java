@@ -253,8 +253,8 @@ public class Exercise_5_Test {
     public void overrideDefaultMethodInInterfaceToProvideUserEnteredSongRatings() {
         MusicLibrary library = new UserRatedLocalFilesystemMusicLibrary();
 
-        assertThat(library.ratingOf(new Song("Desolation Row", "Bob Dylan")), is(new Rating(60)));
-        assertThat(UserRatedMusicLibrary.class, HasConcreteMethod.called("ratingOf"));
+        assertThat(library.ratingOf(new Song("Desolation Row", "Bob Dylan")), is(new Rating(3)));
+        assertThat(UserRatedLocalFilesystemMusicLibrary.class, HasConcreteMethod.called("ratingOf"));
     }
 
     private Matcher<Song> songBy(String artist) {

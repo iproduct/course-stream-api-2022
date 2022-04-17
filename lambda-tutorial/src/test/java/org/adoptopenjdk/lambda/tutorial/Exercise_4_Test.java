@@ -211,7 +211,7 @@ public class Exercise_4_Test {
      * particular objects.
      *
      * @see Documents#print(Document, PagePrinter)
-     * @see StringBuilder#append
+     * @see StringBuilder#append(String) 
      * @see PagePrinter#printPage(Page)
      *
      */
